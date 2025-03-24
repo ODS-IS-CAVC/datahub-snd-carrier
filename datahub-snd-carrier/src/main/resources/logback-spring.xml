@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE logback>
+<configuration>
+
+	<!-- 定数 -->
+	<property name="kinoID" value="${kinoID:-carrier01Snd}" />
+	<property name="eventName" value="他社システムからデータ取得" />
+	
+    <!--開発環境用設定 -->
+    <springProfile name="dev">
+        <property name="logFilePath" value="/log/dev/" />
+        <property name="logFileName" value="datahub-snd-carrier" />
+        <property name="logLevel" value="DEBUG" />
+    </springProfile>
+
+    <!--production環境用設定 -->
+    <springProfile name="production">
+        <property name="logFilePath" value="/log/production/" />
+        <property name="logFileName" value="datahub-snd-carrier" />
+      <property name="logLevel" value="INFO" />
+    </springProfile>
+
+    <!-- コンソール出力 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread]:[${kinoID}][${eventName}] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- アプリケーションログのファイル書き出し -->
+    <appender name="APPLIATION_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--ファイル名設定 -->
+        <file>${user.dir}${logFilePath}${logFileName}.log</file>
+        <!--ログファイルのローテーション設定 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${user.dir}${logFilePath}${logFileName}-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <!--ログ出力フォーマット設定 -->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread]:[${kinoID}][${eventName}] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ロガー -->
+    <logger name="appLogger" level="DEBUG">
+      <appender-ref ref="APPLIATION_LOG" />
+    </logger>
+
+    <!-- ルート -->
+    <root level="${logLevel}">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="APPLIATION_LOG" />
+    </root>
+</configuration>
