@@ -17,7 +17,8 @@ Eclipse 2023-12 (4.30.0)
 
 ## システム構成図、開発環境の構築方法
 
-`datahub-snd-carrier
+```
+datahub-snd-carrier
 　─src
     └─main
         ├─java
@@ -101,51 +102,47 @@ Eclipse 2023-12 (4.30.0)
                 application-dev.properties
                 application-production.properties
                 application.properties
-                logback-spring.xml`
+                logback-spring.xml
+```
 
-# 使い方
-
+## 使い方
 datahub-snd-carrier
-	--変数について--
-		application.propertiesの
-		app.api.carriero-url-auth
-		に外部認証API接続先のURLを入力する
-		app.api.carrier-url-data-channel
-		に外部API接続先のURLのエンドポイント以前のパスを入力する
 
-		vehicle=/vehicle
-		shipper_trans_capacity
-		carrier_trans_request	
-		carrier_trans_capacity
-		に外部API用エンドポイントを入力する
-		※上記の外部API接続先のURLと合わせてパスが完成する
+### 変数について
+application.propertiesの
+app.api.carriero-url-auth
+に外部認証API接続先のURLを入力する
+app.api.carrier-url-data-channel
+に外部API接続先のURLのエンドポイント以前のパスを入力する
 
-		app.api.carrier-ke
-		app.api.carrier-client-id
-		app.api.carrier-client-secret
-		に外部API接続用アカウントを入力する
+- vehicle=/vehicle
+- shipper_trans_capacity
+- carrier_trans_request	
+- carrier_trans_capacity
+に外部API用エンドポイントを入力する
+※上記の外部API接続先のURLと合わせてパスが完成する
+- app.api.carrier-ke
+- app.api.carrier-client-id
+- app.api.carrier-client-secretに外部API接続用アカウントを入力する
+- app.api.datahub-urlにDataHub APIのURLを入力する	
 
-		app.api.datahub-urlにDataHub APIのURLを入力する	
+### JsonToCsv変換について
 
+#### 項目に関して
+objectをModelとしてデータを保持する
+ModelのデータをCSVに変換していく
 
-	--JsonToCsv変換について--
+#### 入れ子構造について
+入れ子部分の一番最下層をCSV出力単位とする
+データを保持するModelの　孫要素を子要素が持ち、子要素を親要素が持つことで入れ子構造を実現している
 
-	■項目に関して
-	objectをModelとしてデータを保持する
-	ModelのデータをCSVに変換していく
+### 繰り返し構造について
+jsonデータのarrayをListとしてModelに持たせる
+CSV出力時、List内の項目をCSVデータとして繰り返しCSV出力する
 
-	■入れ子構造について
-	入れ子部分の一番最下層をCSV出力単位とする
-	データを保持するModelの　孫要素を子要素が持ち、子要素を親要素が持つことで入れ子構造を実現している
-
-	■繰り返し構造について
-	jsonデータのarrayをListとしてModelに持たせる
-	CSV出力時、List内の項目をCSVデータとして繰り返しCSV出力する
-
-	■繰り返し構造を入れ子にした繰り返し構造について
-	繰り返し構造である親項目の子項目の一つに繰り返し構造があった場合、
-	繰り返し以外の子項目のデータを持ち回り、繰り返しCSV出力する
-
+### 繰り返し構造を入れ子にした繰り返し構造について
+繰り返し構造である親項目の子項目の一つに繰り返し構造があった場合、
+繰り返し以外の子項目のデータを持ち回り、繰り返しCSV出力する
 
 ## 問合せ及び要望に関して
 本リポジトリは現状は主に配布目的の運用となるため、IssueやPull Requestに関しては受け付けておりません
