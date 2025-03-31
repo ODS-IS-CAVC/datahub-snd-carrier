@@ -3,10 +3,10 @@
 ## リポジトリの概要
 共同輸送システムにデータを送受信するためのAPI
 	
-## 機能説明	
-登録（更新）：HTTPレスポンスにてDBから抽出したZip圧縮されたCSVデータを、JSONデータに変換し、HTTPリクエストにて共同輸送システムに送信する
-削除：削除したいレコードの主キーとなる値をクエリパラメータにしHTTPリクエストにて共同輸送システムに送信する
-参照：HTTPレスポンスにて共同輸送システムから受信したJSONデータをCSVデータに変換、Zip圧縮し、HTTPリクエストにてDBに格納する
+## 機能説明
+- 登録（更新）：HTTPレスポンスにてDBから抽出したZip圧縮されたCSVデータを、JSONデータに変換し、HTTPリクエストにて共同輸送システムに送信する
+- 削除：削除したいレコードの主キーとなる値をクエリパラメータにしHTTPリクエストにて共同輸送システムに送信する
+- 参照：HTTPレスポンスにて共同輸送システムから受信したJSONデータをCSVデータに変換、Zip圧縮し、HTTPリクエストにてDBに格納する
 
 ## 使用言語
 JavaSE-17
@@ -106,43 +106,38 @@ datahub-snd-carrier
 ```
 
 ## 使い方
-datahub-snd-carrier
-
 ### 変数について
-application.propertiesの
-app.api.carriero-url-auth
-に外部認証API接続先のURLを入力する
-app.api.carrier-url-data-channel
-に外部API接続先のURLのエンドポイント以前のパスを入力する
+- `application.properties`の`app.api.carriero-url-auth`に外部認証API接続先のURLを入力する
+- `app.api.carrier-url-data-channel`に外部API接続先のURLのエンドポイント以前のパスを入力する
 
-- vehicle=/vehicle
-- shipper_trans_capacity
-- carrier_trans_request	
-- carrier_trans_capacity
-に外部API用エンドポイントを入力する
-※上記の外部API接続先のURLと合わせてパスが完成する
-- app.api.carrier-ke
-- app.api.carrier-client-id
-- app.api.carrier-client-secretに外部API接続用アカウントを入力する
-- app.api.datahub-urlにDataHub APIのURLを入力する	
+- 以下に外部API用エンドポイントを入力する ※上記の外部API接続先のURLと合わせてパスが完成する  
+	- `vehicle=/vehicle`
+	- `shipper_trans_capacity`
+	- `carrier_trans_request`	
+	- `carrier_trans_capacity`
+
+- 以下に外部API接続用アカウントを入力する
+	- `app.api.carrier-ke`
+	- `app.api.carrier-client-id`
+	- `app.api.carrier-client-secret`
+- `app.api.datahub-url`にDataHub APIのURLを入力する	
 
 ### JsonToCsv変換について
 
-#### 項目に関して
-objectをModelとしてデータを保持する
-ModelのデータをCSVに変換していく
+- 項目に関して
+	- objectをModelとしてデータを保持する
+	- ModelのデータをCSVに変換していく
 
-#### 入れ子構造について
-入れ子部分の一番最下層をCSV出力単位とする
-データを保持するModelの　孫要素を子要素が持ち、子要素を親要素が持つことで入れ子構造を実現している
+- 入れ子構造について
+	- 入れ子部分の一番最下層をCSV出力単位とする
+	- データを保持するModelの　孫要素を子要素が持ち、子要素を親要素が持つことで入れ子構造を実現している
 
-### 繰り返し構造について
-jsonデータのarrayをListとしてModelに持たせる
-CSV出力時、List内の項目をCSVデータとして繰り返しCSV出力する
+- 繰り返し構造について
+	- jsonデータのarrayをListとしてModelに持たせる
+	- CSV出力時、List内の項目をCSVデータとして繰り返しCSV出力する
 
-### 繰り返し構造を入れ子にした繰り返し構造について
-繰り返し構造である親項目の子項目の一つに繰り返し構造があった場合、
-繰り返し以外の子項目のデータを持ち回り、繰り返しCSV出力する
+- 繰り返し構造を入れ子にした繰り返し構造について
+	- 繰り返し構造である親項目の子項目の一つに繰り返し構造があった場合、繰り返し以外の子項目のデータを持ち回り、繰り返しCSV出力する
 
 ## 問合せ及び要望に関して
 本リポジトリは現状は主に配布目的の運用となるため、IssueやPull Requestに関しては受け付けておりません
